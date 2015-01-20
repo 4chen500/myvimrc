@@ -12,6 +12,8 @@ Bundle 'kien/ctrlp.vim'
 Bundle 'scrooloose/nerdtree'
 Bundle 'fholgado/minibufexpl.vim'
 Bundle 'Shougo/neocomplcache.vim'
+Bundle "wookiehangover/jshint.vim"
+Bundle "Yggdroot/indentLine"
 
 " Color Themes
 Bundle 'flazz/vim-colorschemes'
@@ -109,7 +111,7 @@ set completeopt=menuone,longest,preview
 "
 
 " CtrlP
-set wildignore+=*/.git/*,*/.hg/*,*/.svn/* 
+set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/node_modules/*,*/package/Package/*,*/dist/*
 
 "
 " Basic shortcuts definitions
