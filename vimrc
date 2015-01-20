@@ -17,7 +17,7 @@ Bundle "Yggdroot/indentLine"
 
 " Color Themes
 Bundle 'flazz/vim-colorschemes'
-colorscheme Monokai
+colorscheme mustang
 
 """"""""
 if has('autocmd')
