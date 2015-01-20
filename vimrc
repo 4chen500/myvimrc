@@ -30,6 +30,7 @@ set omnifunc=syntaxcomplete#Complete
 
 " Use :help 'option' to see the documentation for the given option.
 set autoindent
+set smartindent
 set backspace=indent,eol,start
 set complete-=i
 set showmatch
@@ -56,8 +57,18 @@ set wildmenu
 set autoread
 
 set encoding=utf-8
-set tabstop=2 shiftwidth=2 expandtab
-set listchars=tab:▒░,trail:▓
+"2 space tab tabbing:
+"set noexpandtab
+""set tabstop=2
+"set softtabstop=2
+""set shiftwidth=2
+
+" 4 space tabbing (with no tabs) this sucks but I have to use it
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+set expandtab
+set listchars=tab:▒░,trail:▓,eol:¬
 set list
 
 inoremap <C-U> <C-G>u<C-U>
@@ -154,3 +165,11 @@ let g:neocomplcache_enable_at_startup = 1
 if filereadable(expand("~/.vimrc.local"))
   source ~/.vimrc.local
 endif
+" Set the backups/undos/swaps to go to centralized locations:
+set directory=~/.vim/swap//
+try
+set undodir=~/.vim/undo//
+    set undofile
+catch /Unknown option/
+    " For versions of Vim prior to 7.3
+endtry
