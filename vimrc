@@ -1,23 +1,24 @@
-" vim-sublime - A minimal Sublime Text -like vim experience bundle
-"               http://github.com/grigio/vim-sublime
-" Best view with a 256 color terminal and Powerline fonts
-
 set nocompatible
+
 filetype off
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
+
 Bundle 'gmarik/vundle'
 Bundle 'terryma/vim-multiple-cursors'
 Bundle 'kien/ctrlp.vim'
 Bundle 'scrooloose/nerdtree'
-Bundle 'fholgado/minibufexpl.vim'
 Bundle 'Shougo/neocomplcache.vim'
-Bundle "wookiehangover/jshint.vim"
-Bundle "Yggdroot/indentLine"
+Bundle 'wookiehangover/jshint.vim'
+Bundle 'tomtom/tcomment_vim'
+Bundle 'bling/vim-airline'
+Bundle 'fholgado/minibufexpl.vim'
+Bundle 'groenewege/vim-less'
+" Bundle 'Yggdroot/indentLine' this might be what is slowing things down
 
 " Color Themes
 Bundle 'flazz/vim-colorschemes'
-colorscheme mustang
+colorscheme monokain
 
 """"""""
 if has('autocmd')
@@ -36,6 +37,7 @@ set smartindent
 set backspace=indent,eol,start
 set complete-=i
 set showmatch
+set matchtime=1
 set showmode
 set smarttab
 
@@ -45,17 +47,11 @@ set shiftround
 set ttimeout
 set ttimeoutlen=50
 
-set incsearch
-" Use <C-L> to clear the highlighting of :set hlsearch.
-if maparg('<C-L>', 'n') ==# ''
-  nnoremap <silent> <C-L> :nohlsearch<CR><C-L>
-endif
-
 set laststatus=2
 set ruler
 set showcmd
 set wildmenu
-
+set transparency=5
 set autoread
 
 set encoding=utf-8
@@ -72,29 +68,12 @@ set shiftwidth=4
 set expandtab
 set listchars=tab:▒░,trail:▓,eol:¬
 set list
-
-inoremap <C-U> <C-G>u<C-U>
+set incsearch
 
 set number
 set hlsearch
 set ignorecase
 set smartcase
-
-" Don't use Ex mode, use Q for formatting
-map Q gq
-
-" In many terminal emulators the mouse works just fine, thus enable it.
-if has('mouse')
-  set mouse=a
-endif
-
-" do not history when leavy buffer
-set hidden
-
-" FIXME: (broken) ctrl s to save
-noremap  <C-S> :update<CR>
-vnoremap <C-S> <C-C>:update<CR>
-inoremap <C-S> <Esc>:update<CR>
 
 set nobackup
 set nowritebackup
@@ -106,17 +85,34 @@ inoremap <C-c> <Esc>
 
 set completeopt=menuone,longest,preview
 
-"
-" Plugins config
-"
 
 " CtrlP
 set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/node_modules/*,*/package/Package/*,*/dist/*
 
-"
-" Basic shortcuts definitions
-"  most in visual mode / selection (v or ⇧ v)
-"
+" do not history when leaving buffer
+set hidden
+
+
+" Use <C-L> to clear the highlighting of :set hlsearch.
+if maparg('<C-L>', 'n') ==# ''
+  nnoremap <silent> <C-L> :nohlsearch<CR><C-L>
+endif
+
+inoremap <C-U> <C-G>u<C-U>
+
+" Don't use Ex mode, use Q for formatting
+map Q gq
+
+" In many terminal emulators the mouse works just fine, thus enable it.
+if has('mouse')
+  set mouse=a
+endif
+
+
+" FIXME: (broken) ctrl s to save
+noremap  <C-S> :update<CR>
+vnoremap <C-S> <C-C>:update<CR>
+inoremap <C-S> <Esc>:update<CR>
 
 " Find
 map <C-f> /
@@ -133,20 +129,6 @@ vmap <C-w> S
 vmap <C-x> d
 vmap <C-v> p
 vmap <C-c> y
-" Undo, Redo (broken)
-nnoremap <C-z>  :undo<CR>
-inoremap <C-z>  <Esc>:undo<CR>
-nnoremap <C-y>  :redo<CR>
-inoremap <C-y>  <Esc>:redo<CR>
-" Tabs
-nnoremap <C-b>  :tabprevious<CR>
-inoremap <C-b>  <Esc>:tabprevious<CR>i
-nnoremap <C-n>  :tabnext<CR>
-inoremap <C-n>  <Esc>:tabnext<CR>i
-nnoremap <C-t>  :tabnew<CR>
-inoremap <C-t>  <Esc>:tabnew<CR>i
-nnoremap <C-k>  :tabclose<CR>
-inoremap <C-k>  <Esc>:tabclose<CR>i
 
 " nerdtree settings
 map <C-n> :NERDTreeToggle<CR>
@@ -155,18 +137,19 @@ map <C-n> :NERDTreeToggle<CR>
 map \ :
 
 let mapleader = ','
-nnoremap <Leader>p :set paste<CR>
-nnoremap <Leader>o :set nopaste<CR>
-noremap  <Leader>g :GitGutterToggle<CR>
 noremap  <Leader>n :NERDTreeToggle<CR>
 
 " automati omnincomplete
 let g:neocomplcache_enable_at_startup = 1
 
+"airline tabs
+"let g:airline#extensions#tabline#enabled = 1
+
 " this machine config
 if filereadable(expand("~/.vimrc.local"))
   source ~/.vimrc.local
 endif
+
 " Set the backups/undos/swaps to go to centralized locations:
 set directory=~/.vim/swap//
 try
@@ -175,3 +158,62 @@ set undodir=~/.vim/undo//
 catch /Unknown option/
     " For versions of Vim prior to 7.3
 endtry
+
+" Project-specific settings:
+"au BufEnter *Projects/FuelUX/* call s:real_tab()
+"au BufEnter *Projects/FuelUX2/* call s:real_tab()
+au BufEnter *www/ETElements/constellation/* call s:real_tab()
+
+function! s:real_tab()
+  " Two space tabbing:
+  set noexpandtab
+endfun
+
+function! s:two_tab()
+  " Two space tabbing:
+  set expandtab
+  set tabstop=4
+  set softtabstop=4
+  set shiftwidth=2
+endfun
+
+" Fix janky files
+function! FixJanky()
+  %s/\r//ge " Remove DOS line endings
+  %s/\s\+$//e " Remove trailing whitespace
+  retab " Fix mixed tabs and spaces
+  call feedkeys("\<C-o>")
+endfun
+nnoremap <silent> <Leader>f :call FixJanky()<CR>
+
+" Format XML:
+function! DoPrettyXML()
+  " save the filetype so we can restore it later
+  let l:origft = &ft
+  set ft=
+  " delete the xml header if it exists. This will
+  " permit us to surround the document with fake tags
+  " without creating invalid xml.
+  1s/<?xml .*?>//e
+  " insert fake tags around the entire document.
+  " This will permit us to pretty-format excerpts of
+  " XML that may contain multiple top-level elements.
+  0put ='<PrettyXML>'
+  $put ='</PrettyXML>'
+  silent %!xmllint --format -
+  " xmllint will insert an <?xml?> header. it's easy enough to delete
+  " if you don't want it.
+  " delete the fake tags
+  2d
+  $d
+  " restore the 'normal' indentation, which is one extra level
+  " too deep due to the extra tags we wrapped around the document.
+  silent %<
+  " back to home
+  1
+  " restore the filetype
+  exe "set ft=" . l:origft
+endfunction
+
+command! PrettyXML call DoPrettyXML()
+nnoremap <silent> <Leader>x :call DoPrettyXML()<CR>
