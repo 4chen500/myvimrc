@@ -9,13 +9,14 @@ Bundle 'terryma/vim-multiple-cursors'
 Bundle 'kien/ctrlp.vim'
 Bundle 'scrooloose/nerdtree'
 Bundle 'Shougo/neocomplcache.vim'
-Bundle 'wookiehangover/jshint.vim'
+"Bundle 'wookiehangover/jshint.vim'
 Bundle 'tomtom/tcomment_vim'
 Bundle 'bling/vim-airline'
 Bundle 'fholgado/minibufexpl.vim'
 Bundle 'groenewege/vim-less'
-" Bundle 'Yggdroot/indentLine' this might be what is slowing things down
-
+Bundle 'Yggdroot/indentLine'
+Bundle 'maksimr/vim-jsbeautify'
+Bundle  'einars/js-beautify'
 " Color Themes
 Bundle 'flazz/vim-colorschemes'
 colorscheme monokain
@@ -79,6 +80,9 @@ set nobackup
 set nowritebackup
 set noswapfile
 set fileformats=unix,dos,mac
+
+" only jshint on save
+let JSHintUpdateWriteOnly=1
 
 " exit insert mode 
 inoremap <C-c> <Esc>
@@ -144,6 +148,9 @@ let g:neocomplcache_enable_at_startup = 1
 
 "airline tabs
 "let g:airline#extensions#tabline#enabled = 1
+"
+" JSHint now
+noremap <Leader>j :JSHintUpdate<CR>:copen<cr>
 
 " this machine config
 if filereadable(expand("~/.vimrc.local"))
@@ -217,3 +224,17 @@ endfunction
 
 command! PrettyXML call DoPrettyXML()
 nnoremap <silent> <Leader>x :call DoPrettyXML()<CR>
+
+
+map <c-f> :call JsBeautify()<cr>
+  " or
+autocmd FileType javascript noremap <buffer>  <c-f> :call JsBeautify()<cr>
+  " for html
+autocmd FileType html noremap <buffer> <c-f> :call HtmlBeautify()<cr>
+  " for css or scss
+autocmd FileType css noremap <buffer> <c-f> :call CSSBeautify()<cr>
+
+  " for selected text
+autocmd FileType javascript vnoremap <buffer>  <c-f> :call RangeJsBeautify()<cr>
+autocmd FileType html vnoremap <buffer> <c-f> :call RangeHtmlBeautify()<cr>
+autocmd FileType css vnoremap <buffer> <c-f> :call RangeCSSBeautify()<cr>
