@@ -1,5 +1,4 @@
 set nocompatible
-
 filetype off
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
@@ -9,17 +8,20 @@ Bundle 'terryma/vim-multiple-cursors'
 Bundle 'kien/ctrlp.vim'
 Bundle 'scrooloose/nerdtree'
 Bundle 'Shougo/neocomplcache.vim'
-"Bundle 'wookiehangover/jshint.vim'
+Bundle 'Shutnik/jshint2.vim'
 Bundle 'tomtom/tcomment_vim'
 Bundle 'bling/vim-airline'
 Bundle 'fholgado/minibufexpl.vim'
 Bundle 'groenewege/vim-less'
 Bundle 'Yggdroot/indentLine'
 Bundle 'maksimr/vim-jsbeautify'
-Bundle  'einars/js-beautify'
+Bundle 'einars/js-beautify'
 " Color Themes
 Bundle 'flazz/vim-colorschemes'
-colorscheme monokain
+Plugin 'jelera/vim-javascript-syntax'
+"Bundle 'majutsushi/tagbar'
+"Bundle 'marijnh/tern_for_vim'
+colorscheme jellybeans
 
 """"""""
 if has('autocmd')
@@ -54,7 +56,8 @@ set showcmd
 set wildmenu
 set transparency=5
 set autoread
-
+"set foldlevelstart=99 " don't fold everything by default
+set nofoldenable
 set encoding=utf-8
 "2 space tab tabbing:
 "set noexpandtab
@@ -80,9 +83,6 @@ set nobackup
 set nowritebackup
 set noswapfile
 set fileformats=unix,dos,mac
-
-" only jshint on save
-let JSHintUpdateWriteOnly=1
 
 " exit insert mode 
 inoremap <C-c> <Esc>
@@ -146,12 +146,41 @@ noremap  <Leader>n :NERDTreeToggle<CR>
 " automati omnincomplete
 let g:neocomplcache_enable_at_startup = 1
 
+" airline settings
+let g:airline_powerline_fonts = 1
+if !exists('g:airline_symbols')
+  let g:airline_symbols = {}
+endif
+let g:airline_symbols.space = "\ua0"
+let g:airline_theme = 'jellybeans'
+
 "airline tabs
 "let g:airline#extensions#tabline#enabled = 1
-"
-" JSHint now
-noremap <Leader>j :JSHintUpdate<CR>:copen<cr>
 
+" jshint validation
+nnoremap <silent><F1> :JSHint<CR>
+inoremap <silent><F1> <C-O>:JSHint<CR>
+vnoremap <silent><F1> :JSHint<CR>
+
+" show next jshint error
+nnoremap <silent><F2> :lnext<CR>
+inoremap <silent><F2> <C-O>:lnext<CR>
+vnoremap <silent><F2> :lnext<CR>
+
+" show previous jshint error
+nnoremap <silent><F3> :lprevious<CR>
+inoremap <silent><F3> <C-O>:lprevious<CR>
+vnoremap <silent><F3> :lprevious<CR>
+"DON'T Lint JavaScript files after saving it:
+let jshint2_save = 0
+" DONT lint after reading (trigger only)
+let jshint2_read = 0
+" skip lint confirmation for non-js:
+let jshint2_confirm = 0
+"default error list height
+let jshint2_hight = 20
+
+"nmap <F8> :TagbarToggle<CR>
 " this machine config
 if filereadable(expand("~/.vimrc.local"))
   source ~/.vimrc.local
@@ -170,6 +199,7 @@ endtry
 "au BufEnter *Projects/FuelUX/* call s:real_tab()
 "au BufEnter *Projects/FuelUX2/* call s:real_tab()
 au BufEnter *www/ETElements/constellation/* call s:real_tab()
+au BufEnter *www/ETElements/FuelSwitch/* call s:real_tab()
 
 function! s:real_tab()
   " Two space tabbing:
@@ -229,6 +259,7 @@ nnoremap <silent> <Leader>x :call DoPrettyXML()<CR>
 map <c-f> :call JsBeautify()<cr>
   " or
 autocmd FileType javascript noremap <buffer>  <c-f> :call JsBeautify()<cr>
+au FileType javascript call JavaScriptFold()
   " for html
 autocmd FileType html noremap <buffer> <c-f> :call HtmlBeautify()<cr>
   " for css or scss
@@ -238,3 +269,19 @@ autocmd FileType css noremap <buffer> <c-f> :call CSSBeautify()<cr>
 autocmd FileType javascript vnoremap <buffer>  <c-f> :call RangeJsBeautify()<cr>
 autocmd FileType html vnoremap <buffer> <c-f> :call RangeHtmlBeautify()<cr>
 autocmd FileType css vnoremap <buffer> <c-f> :call RangeCSSBeautify()<cr>
+
+" Called once right before you start selecting multiple cursors
+function! Multiple_cursors_before()
+  if exists(':NeoCompleteLock')==2
+    exe 'NeoCompleteLock'
+  endif
+endfunction
+
+" Called once only when the multiple selection is canceled (default <Esc>)
+function! Multiple_cursors_after()
+  if exists(':NeoCompleteUnlock')==2
+    exe 'NeoCompleteUnlock'
+  endif
+endfunction
+
+set guifont=Sauce\ Code\ Powerline:h14
