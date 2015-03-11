@@ -21,7 +21,8 @@ Bundle 'flazz/vim-colorschemes'
 Plugin 'jelera/vim-javascript-syntax'
 "Bundle 'majutsushi/tagbar'
 "Bundle 'marijnh/tern_for_vim'
-colorscheme jellybeans
+colorscheme molokai
+set guifont=Sauce\ Code\ Powerline
 
 """"""""
 if has('autocmd')
@@ -152,7 +153,7 @@ if !exists('g:airline_symbols')
   let g:airline_symbols = {}
 endif
 let g:airline_symbols.space = "\ua0"
-let g:airline_theme = 'jellybeans'
+let g:airline_theme = 'hybrid'
 
 "airline tabs
 "let g:airline#extensions#tabline#enabled = 1
@@ -284,4 +285,3 @@ function! Multiple_cursors_after()
   endif
 endfunction
 
-set guifont=Sauce\ Code\ Powerline:h14
