@@ -21,8 +21,7 @@ Bundle 'flazz/vim-colorschemes'
 Plugin 'jelera/vim-javascript-syntax'
 "Bundle 'majutsushi/tagbar'
 "Bundle 'marijnh/tern_for_vim'
-colorscheme molokai
-set guifont=Sauce\ Code\ Powerline
+colorscheme jellybeans
 
 """"""""
 if has('autocmd')
@@ -90,6 +89,9 @@ inoremap <C-c> <Esc>
 
 set completeopt=menuone,longest,preview
 
+" This allows buffers to be hidden if you've modified a buffer.
+" This is almost a must if you wish to use buffers in this way.
+set hidden
 
 " CtrlP
 set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/node_modules/*,*/package/Package/*,*/dist/*
@@ -130,10 +132,6 @@ vmap <C-m> gc
 let g:tcomment#replacements_xml={}
 " Text wrap simpler, then type the open tag or ',"
 vmap <C-w> S
-" Cut, Paste, Copy
-vmap <C-x> d
-vmap <C-v> p
-vmap <C-c> y
 
 " nerdtree settings
 map <C-n> :NERDTreeToggle<CR>
@@ -144,10 +142,20 @@ map \ :
 let mapleader = ','
 noremap  <Leader>n :NERDTreeToggle<CR>
 
+" Move to the next buffer
+nmap <C-S-Right> :bnext<CR>
+
+" Move to the previous buffer
+nmap <C-S-Left> :bprevious<CR>
+
+" Show all open buffers and their status
+nmap <leader>bls :ls<CR>
+
 " automati omnincomplete
 let g:neocomplcache_enable_at_startup = 1
 
 " airline settings
+set guifont=Sauce\ Code\ Powerline\ Semibold:h14
 let g:airline_powerline_fonts = 1
 if !exists('g:airline_symbols')
   let g:airline_symbols = {}
@@ -285,3 +293,14 @@ function! Multiple_cursors_after()
   endif
 endfunction
 
+" Meta+1-0 jumps to tab 1-10, Shift+Meta+1-0 jumps to tab 11-20:
+let s:windowmapnr = 0
+let s:wins='1234567890!@#$%^&*()'
+while (s:windowmapnr < strlen(s:wins))
+    exe 'noremap <silent> <M-' . s:wins[s:windowmapnr] . '> ' . (s:windowmapnr + 1) . 'gt'
+    exe 'inoremap <silent> <M-' . s:wins[s:windowmapnr] . '> <C-O>' . (s:windowmapnr + 1) . 'gt'
+    exe 'cnoremap <silent> <M-' . s:wins[s:windowmapnr] . '> <C-C>' . (s:windowmapnr + 1) . 'gt'
+    exe 'vnoremap <silent> <M-' . s:wins[s:windowmapnr] . '> <C-C>' . (s:windowmapnr + 1) . 'gt'
+    let s:windowmapnr += 1
+endwhile
+unlet s:windowmapnr s:wins
