@@ -157,6 +157,12 @@ nmap <leader>bls :ls<CR>
 " Add JsDoc for the current function
 nmap <leader>j :JsDoc<CR>
 
+" Tern stuff
+nmap <leader>TR :TernRefs<CR>
+nmap <leader>TD :TernDef<CR>
+nmap <leader>Tr :TernRename<CR>
+
+
 " automati omnincomplete
 let g:neocomplcache_enable_at_startup = 1
 
