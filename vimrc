@@ -23,9 +23,12 @@ Plugin 'jelera/vim-javascript-syntax'
 "Bundle 'majutsushi/tagbar'
 Bundle 'marijnh/tern_for_vim'
 "
-"Ruby stuff
+" Ruby stuff
 Bundle 'astashov/vim-ruby-debugger'
 Bundle 'vim-ruby/vim-ruby'
+
+" Startify FTW
+Bundle 'mhinz/vim-startify'
 
 colorscheme jellybeans
 
@@ -161,6 +164,7 @@ nmap <leader>j :JsDoc<CR>
 nmap <leader>TR :TernRefs<CR>
 nmap <leader>TD :TernDef<CR>
 nmap <leader>Tr :TernRename<CR>
+nmap <leader>TT :TernType<CR>
 
 
 " automati omnincomplete
