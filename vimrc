@@ -16,11 +16,17 @@ Bundle 'groenewege/vim-less'
 Bundle 'Yggdroot/indentLine'
 Bundle 'maksimr/vim-jsbeautify'
 Bundle 'einars/js-beautify'
+Bundle 'heavenshell/vim-jsdoc'
 " Color Themes
 Bundle 'flazz/vim-colorschemes'
 Plugin 'jelera/vim-javascript-syntax'
 "Bundle 'majutsushi/tagbar'
-"Bundle 'marijnh/tern_for_vim'
+Bundle 'marijnh/tern_for_vim'
+"
+"Ruby stuff
+Bundle 'astashov/vim-ruby-debugger'
+Bundle 'vim-ruby/vim-ruby'
+
 colorscheme jellybeans
 
 """"""""
@@ -133,14 +139,11 @@ let g:tcomment#replacements_xml={}
 " Text wrap simpler, then type the open tag or ',"
 vmap <C-w> S
 
-" nerdtree settings
-map <C-n> :NERDTreeToggle<CR>
-
 " lazy ':'
 map \ :
 
 let mapleader = ','
-noremap  <Leader>n :NERDTreeToggle<CR>
+noremap  <Leader>; :NERDTreeToggle<CR>
 
 " Move to the next buffer
 nmap <C-S-Right> :bnext<CR>
@@ -150,6 +153,9 @@ nmap <C-S-Left> :bprevious<CR>
 
 " Show all open buffers and their status
 nmap <leader>bls :ls<CR>
+
+" Add JsDoc for the current function
+nmap <leader>j :JsDoc<CR>
 
 " automati omnincomplete
 let g:neocomplcache_enable_at_startup = 1
@@ -189,6 +195,10 @@ let jshint2_confirm = 0
 "default error list height
 let jshint2_hight = 20
 
+" ruby debugger
+let g:ruby_debugger_progname = 'mvim'
+let g:ruby_debugger_debug_mode = 1
+
 "nmap <F8> :TagbarToggle<CR>
 " this machine config
 if filereadable(expand("~/.vimrc.local"))
@@ -209,6 +219,7 @@ endtry
 "au BufEnter *Projects/FuelUX2/* call s:real_tab()
 au BufEnter *www/ETElements/constellation/* call s:real_tab()
 au BufEnter *www/ETElements/FuelSwitch/* call s:real_tab()
+au BufEnter *www/fuelux-facades/* call s:real_tab()
 
 function! s:real_tab()
   " Two space tabbing:
