@@ -166,6 +166,8 @@ nmap <leader>TD :TernDef<CR>
 nmap <leader>Tr :TernRename<CR>
 nmap <leader>TT :TernType<CR>
 
+" startify stuff
+let g:startify_session_dir = "~/.vim/sessions"
 
 " automati omnincomplete
 let g:neocomplcache_enable_at_startup = 1
