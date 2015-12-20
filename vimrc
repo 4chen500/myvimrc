@@ -1,41 +1,49 @@
 set nocompatible
 filetype off
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
 
-Bundle 'gmarik/vundle'
-Bundle 'terryma/vim-multiple-cursors'
-Bundle 'kien/ctrlp.vim'
-Bundle 'scrooloose/nerdtree'
-Bundle 'Shougo/neocomplcache.vim'
-Bundle 'Shutnik/jshint2.vim'
-Bundle 'tomtom/tcomment_vim'
-Bundle 'bling/vim-airline'
-Bundle 'fholgado/minibufexpl.vim'
-Bundle 'groenewege/vim-less'
-Bundle 'Yggdroot/indentLine'
-Bundle 'maksimr/vim-jsbeautify'
-Bundle 'einars/js-beautify'
-Bundle 'heavenshell/vim-jsdoc'
+Plugin 'VundleVim/Vundle.vim'
+Plugin 'terryma/vim-multiple-cursors'
+Plugin 'kien/ctrlp.vim'
+Plugin 'scrooloose/nerdtree'
+Plugin 'Shougo/neocomplcache.vim'
+Plugin 'tomtom/tcomment_vim'
+Plugin 'bling/vim-airline'
+Plugin 'fholgado/minibufexpl.vim'
+Plugin 'groenewege/vim-less'
+Plugin 'Yggdroot/indentLine'
+Plugin 'einars/js-beautify'
+Plugin 'maksimr/vim-jsbeautify'
+Plugin 'Chiel92/vim-autoformat'
+Plugin 'wookiehangover/jshint.vim'
+Plugin 'scrooloose/syntastic'
+" tmux
+" Plugin 'christoomey/vim-tmux-navigator'
+
 " Color Themes
-Bundle 'flazz/vim-colorschemes'
-Plugin 'jelera/vim-javascript-syntax'
-"Bundle 'majutsushi/tagbar'
-Bundle 'marijnh/tern_for_vim'
+Plugin 'flazz/vim-colorschemes'
+" Plugin 'jelera/vim-javascript-syntax'
+" Plugin 'majutsushi/tagbar'
 "
 " Ruby stuff
-Bundle 'astashov/vim-ruby-debugger'
-Bundle 'vim-ruby/vim-ruby'
+" Plugin 'vim-ruby/vim-ruby'
 
 " Startify FTW
-Bundle 'mhinz/vim-startify'
+" Bundle 'mhinz/vim-startify'
+
+" ANSI escaping for output
+" Bundle 'vim-scripts/AnsiEsc.vim'
 
 colorscheme jellybeans
+set transparency=50
 
 """"""""
-if has('autocmd')
-  filetype plugin indent on
-endif
+call vundle#end()
+filetype plugin indent on
+
+autocmd FileType ruby compiler ruby
+
 if has('syntax') && !exists('g:syntax_on')
   syntax enable
 endif
@@ -63,7 +71,6 @@ set laststatus=2
 set ruler
 set showcmd
 set wildmenu
-set transparency=5
 set autoread
 "set foldlevelstart=99 " don't fold everything by default
 set nofoldenable
@@ -93,6 +100,16 @@ set nowritebackup
 set noswapfile
 set fileformats=unix,dos,mac
 
+" syntastic settings
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
 " exit insert mode 
 inoremap <C-c> <Esc>
 
@@ -116,16 +133,14 @@ endif
 
 inoremap <C-U> <C-G>u<C-U>
 
-" Don't use Ex mode, use Q for formatting
-map Q gq
+" " Don't use Ex mode, use Q for formatting
+" map Q gq
 
 " In many terminal emulators the mouse works just fine, thus enable it.
 if has('mouse')
   set mouse=a
 endif
 
-
-" FIXME: (broken) ctrl s to save
 noremap  <C-S> :update<CR>
 vnoremap <C-S> <C-C>:update<CR>
 inoremap <C-S> <Esc>:update<CR>
@@ -157,14 +172,19 @@ nmap <C-S-Left> :bprevious<CR>
 " Show all open buffers and their status
 nmap <leader>bls :ls<CR>
 
+" Move to the next tab
+nmap <C-S-t-Right> :gt<CR>
+" Move to the last tab
+nmap <C-S-t-Left> :gT<CR>
+
 " Add JsDoc for the current function
 nmap <leader>j :JsDoc<CR>
 
 " Tern stuff
-nmap <leader>TR :TernRefs<CR>
-nmap <leader>TD :TernDef<CR>
-nmap <leader>Tr :TernRename<CR>
-nmap <leader>TT :TernType<CR>
+" nmap <leader>TR :TernRefs<CR>
+" nmap <leader>TD :TernDef<CR>
+" nmap <leader>Tr :TernRename<CR>
+" nmap <leader>TT :TernType<CR>
 
 " startify stuff
 let g:startify_session_dir = "~/.vim/sessions"
@@ -182,36 +202,17 @@ let g:airline_symbols.space = "\ua0"
 let g:airline_theme = 'hybrid'
 
 "airline tabs
-"let g:airline#extensions#tabline#enabled = 1
+" let g:airline#extensions#tabline#enabled = 1
 
-" jshint validation
-nnoremap <silent><F1> :JSHint<CR>
-inoremap <silent><F1> <C-O>:JSHint<CR>
-vnoremap <silent><F1> :JSHint<CR>
-
-" show next jshint error
-nnoremap <silent><F2> :lnext<CR>
-inoremap <silent><F2> <C-O>:lnext<CR>
-vnoremap <silent><F2> :lnext<CR>
-
-" show previous jshint error
-nnoremap <silent><F3> :lprevious<CR>
-inoremap <silent><F3> <C-O>:lprevious<CR>
-vnoremap <silent><F3> :lprevious<CR>
-"DON'T Lint JavaScript files after saving it:
-let jshint2_save = 0
-" DONT lint after reading (trigger only)
-let jshint2_read = 0
-" skip lint confirmation for non-js:
-let jshint2_confirm = 0
-"default error list height
-let jshint2_hight = 20
+" only run jshint at save time
+let JSHintUpdateWriteOnly=1
 
 " ruby debugger
 let g:ruby_debugger_progname = 'mvim'
 let g:ruby_debugger_debug_mode = 1
 
-"nmap <F8> :TagbarToggle<CR>
+nmap <leader>t :TagbarToggle<CR>
+
 " this machine config
 if filereadable(expand("~/.vimrc.local"))
   source ~/.vimrc.local
@@ -232,6 +233,8 @@ endtry
 au BufEnter *www/ETElements/constellation/* call s:real_tab()
 au BufEnter *www/ETElements/FuelSwitch/* call s:real_tab()
 au BufEnter *www/fuelux-facades/* call s:real_tab()
+au BufEnter *www/ContactModels/* call s:two_tab()
+au BufEnter *www/Contacts-QE-Automated-Tests/* call s:two_tab()
 
 function! s:real_tab()
   " Two space tabbing:
@@ -288,19 +291,21 @@ command! PrettyXML call DoPrettyXML()
 nnoremap <silent> <Leader>x :call DoPrettyXML()<CR>
 
 
-map <c-f> :call JsBeautify()<cr>
   " or
-autocmd FileType javascript noremap <buffer>  <c-f> :call JsBeautify()<cr>
-au FileType javascript call JavaScriptFold()
+au FileType javascript noremap <buffer>  <c-f> :call JsBeautify()<cr>
+" au FileType javascript call JavaScriptFold()
   " for html
-autocmd FileType html noremap <buffer> <c-f> :call HtmlBeautify()<cr>
+au FileType html noremap <buffer> <c-f> :call HtmlBeautify()<cr>
   " for css or scss
-autocmd FileType css noremap <buffer> <c-f> :call CSSBeautify()<cr>
+au FileType css noremap <buffer> <c-f> :call CSSBeautify()<cr>
 
   " for selected text
-autocmd FileType javascript vnoremap <buffer>  <c-f> :call RangeJsBeautify()<cr>
-autocmd FileType html vnoremap <buffer> <c-f> :call RangeHtmlBeautify()<cr>
-autocmd FileType css vnoremap <buffer> <c-f> :call RangeCSSBeautify()<cr>
+au FileType javascript vnoremap <buffer>  <c-f> :call RangeJsBeautify()<cr>
+au FileType html vnoremap <buffer> <c-f> :call RangeHtmlBeautify()<cr>
+au FileType css vnoremap <buffer> <c-f> :call RangeCSSBeautify()<cr>
+
+" for Ruby
+au FileType ruby vnoremap <buffer> <c-f> :call Autoformat()<cr>
 
 " Called once right before you start selecting multiple cursors
 function! Multiple_cursors_before()
@@ -327,3 +332,8 @@ while (s:windowmapnr < strlen(s:wins))
     let s:windowmapnr += 1
 endwhile
 unlet s:windowmapnr s:wins
+
+" disable the startup screen
+set shortmess+=I
+execute pathogen#infect()
+call pathogen#helptags()
