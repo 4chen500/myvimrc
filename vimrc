@@ -5,7 +5,7 @@ call vundle#begin()
 
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'terryma/vim-multiple-cursors'
-Plugin 'kien/ctrlp.vim'
+Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'scrooloose/nerdtree'
 Plugin 'Shougo/neocomplcache.vim'
 Plugin 'tomtom/tcomment_vim'
@@ -14,6 +14,11 @@ Plugin 'fholgado/minibufexpl.vim'
 Plugin 'groenewege/vim-less'
 Plugin 'Yggdroot/indentLine'
 Plugin 'scrooloose/syntastic'
+Plugin 'pangloss/vim-javascript'
+Plugin 'mxw/vim-jsx'
+Plugin 'ryanoasis/vim-devicons'
+Plugin 'ryanoasis/nerd-fonts'
+
 " tmux
 " Plugin 'christoomey/vim-tmux-navigator'
 
@@ -24,7 +29,8 @@ Plugin 'flazz/vim-colorschemes'
 " Startify
 " Plugin 'mhinz/vim-startify'
 
-colorscheme molokai
+
+colorscheme jellybeans
 set transparency=10
 
 """"""""
@@ -52,6 +58,9 @@ set matchtime=1
 set showmode
 set smarttab
 
+" Don't automatically resizel panes
+set noequalalways
+
 set nrformats-=octal
 set shiftround
 
@@ -65,7 +74,7 @@ set wildmenu
 set autoread
 "set foldlevelstart=99 " don't fold everything by default
 set nofoldenable
-set encoding=utf-8
+set encoding=utf8
 
 
 set listchars=tab:▒░,trail:▓,eol:¬
@@ -96,6 +105,10 @@ let g:indentLine_conceallevel = 0
 let g:syntastic_javascript_checkers = ['eslint']
 let g:syntastic_enable_signs = 1
 let g:syntastic_loc_list_height=4
+
+" Allow JSX in js files
+let g:jsx_ext_required = 0
+
 
 set completeopt=menuone,longest,preview
 
@@ -152,10 +165,16 @@ nmap <C-S-Left> :bprevious<CR>
 " Show all open buffers and their status
 nmap <leader>bls :ls<CR>
 
-" Move to the next tab
-nmap <C-S-t-Right> :gt<CR>
-" Move to the last tab
-nmap <C-S-t-Left> :gT<CR>
+" Pane resize by 10px each arrow
+nmap <D-S-Left> :vertical resize -1<CR>
+nmap <D-S-Right> :vertical resize +1<CR>
+nmap <D-S-Down> :resize -1<CR>
+nmap <D-S-Up> :resize +1<CR>
+
+" " Move to the next tab
+" nmap <C-S-t-Right> :gt<CR>
+" " Move to the last tab
+" nmap <C-S-t-Left> :gT<CR>
 
 " Add JsDoc for the current function
 nmap <leader>j :JsDoc<CR>
@@ -173,11 +192,13 @@ nmap <leader>j :JsDoc<CR>
 let g:neocomplcache_enable_at_startup = 1
 
 " airline settings
-set guifont=Sauce\ Code\ Powerline\ Semibold:h14
 let g:airline_powerline_fonts = 1
+set guifont=Sauce\ Code\ Pro\:h11
+
 if !exists('g:airline_symbols')
   let g:airline_symbols = {}
 endif
+
 let g:airline_symbols.space = "\ua0"
 let g:airline_theme = 'hybrid'
 
@@ -200,12 +221,20 @@ endif
 
 " Set the backups/undos/swaps to go to centralized locations:
 set directory=~/.vim/swap//
-try
-set undodir=~/.vim/undo//
-    set undofile
-catch /Unknown option/
-    " For versions of Vim prior to 7.3
-endtry
+
+" Put plugins and dictionaries in this dir (also on Windows)
+let vimDir = '$HOME/.vim'
+let &runtimepath.=','.vimDir
+
+" Keep undo history across sessions by storing it in a file
+if has('persistent_undo')
+	let myUndoDir = expand(vimDir . '/undo')
+	" Create dirs
+	call system('mkdir ' . vimDir)
+	call system('mkdir ' . myUndoDir)
+	let &undodir = myUndoDir
+	set undofile
+endif
 
 function! s:two_tab()
   " Two space tabbing:
@@ -251,14 +280,14 @@ au FileType ruby vnoremap <buffer> <c-f> :call Autoformat()<cr>
 " Called once right before you start selecting multiple cursors
 function! Multiple_cursors_before()
   if exists(':NeoCompleteLock')==2
-    exe 'NeoCompleteLock'
+	exe 'NeoCompleteLock'
   endif
 endfunction
 
 " Called once only when the multiple selection is canceled (default <Esc>)
 function! Multiple_cursors_after()
   if exists(':NeoCompleteUnlock')==2
-    exe 'NeoCompleteUnlock'
+	exe 'NeoCompleteUnlock'
   endif
 endfunction
 
