@@ -18,6 +18,8 @@ Plugin 'pangloss/vim-javascript'
 Plugin 'mxw/vim-jsx'
 Plugin 'ryanoasis/vim-devicons'
 Plugin 'ryanoasis/nerd-fonts'
+Plugin 'vim-airline/vim-airline-themes'
+Plugin 'mileszs/ack.vim'
 
 " tmux
 " Plugin 'christoomey/vim-tmux-navigator'
@@ -27,7 +29,7 @@ Plugin 'flazz/vim-colorschemes'
 " Plugin 'jelera/vim-javascript-syntax'
 
 " Startify
-" Plugin 'mhinz/vim-startify'
+Plugin 'mhinz/vim-startify'
 
 
 colorscheme jellybeans
@@ -45,8 +47,15 @@ if has('syntax') && !exists('g:syntax_on')
   syntax enable
 endif
 
+" ack-ag-vim stuff
+if executable('ag')
+  let g:ackprg = 'ag --vimgrep'
+endif
+
 filetype plugin on
 set omnifunc=syntaxcomplete#Complete
+"" Highlight unused imports, first saves, clears previous matches
+nnoremap <leader>ji :w<CR>:call clearmatches()<CR>:let cmd = system('unused -v true ' . expand('%'))<CR>:exec cmd<CR>
 
 " Use :help 'option' to see the documentation for the given option.
 set autoindent
@@ -99,12 +108,11 @@ set statusline+=%*
 "
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
 let g:indentLine_conceallevel = 0
 let g:syntastic_javascript_checkers = ['eslint']
+let g:syntastic_aggregate_errors = 1
 let g:syntastic_enable_signs = 1
-let g:syntastic_loc_list_height=4
+let g:syntastic_loc_list_height = 4
 
 " Allow JSX in js files
 let g:jsx_ext_required = 0
@@ -155,6 +163,7 @@ map \ :
 let mapleader = ','
 noremap  <Leader>; :NERDTreeToggle<CR>
 let NERDTreeChDirMode=0
+let NERDTreeShowHidden=1
 
 " Move to the next buffer
 nmap <C-S-Right> :bnext<CR>
@@ -176,8 +185,8 @@ nmap <D-S-Up> :resize +1<CR>
 " " Move to the last tab
 " nmap <C-S-t-Left> :gT<CR>
 
-" Add JsDoc for the current function
-nmap <leader>j :JsDoc<CR>
+" " Add JsDoc for the current function
+" nmap <leader>j :JsDoc<CR>
 
 " Tern stuff
 " nmap <leader>TR :TernRefs<CR>
@@ -186,7 +195,7 @@ nmap <leader>j :JsDoc<CR>
 " nmap <leader>TT :TernType<CR>
 
 " startify stuff. Its kinda annoying.
-" let g:startify_session_dir = "~/.vim/sessions"
+let g:startify_session_dir = "~/.vim/sessions"
 
 " automati omnincomplete
 let g:neocomplcache_enable_at_startup = 1
@@ -200,7 +209,7 @@ if !exists('g:airline_symbols')
 endif
 
 let g:airline_symbols.space = "\ua0"
-let g:airline_theme = 'hybrid'
+let g:airline_theme = 'luna'
 
 "airline tabs
 " let g:airline#extensions#tabline#enabled = 1
@@ -291,6 +300,8 @@ function! Multiple_cursors_after()
   endif
 endfunction
 
+" Save on esc esc
+map <Esc><Esc> :w<CR>
 
 " disable the startup screen
 set shortmess+=I
