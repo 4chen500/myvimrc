@@ -20,6 +20,7 @@ Plugin 'ryanoasis/vim-devicons'
 Plugin 'ryanoasis/nerd-fonts'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'mileszs/ack.vim'
+Plugin 'lilydjwg/colorizer'
 
 " tmux
 " Plugin 'christoomey/vim-tmux-navigator'
@@ -175,10 +176,10 @@ nmap <C-S-Left> :bprevious<CR>
 nmap <leader>bls :ls<CR>
 
 " Pane resize by 10px each arrow
-nmap <D-S-Left> :vertical resize -1<CR>
-nmap <D-S-Right> :vertical resize +1<CR>
-nmap <D-S-Down> :resize -1<CR>
-nmap <D-S-Up> :resize +1<CR>
+nmap <D-S-Left> :vertical resize -2<CR>
+nmap <D-S-Right> :vertical resize +2<CR>
+nmap <D-S-Down> :resize -2<CR>
+nmap <D-S-Up> :resize +2<CR>
 
 " " Move to the next tab
 " nmap <C-S-t-Right> :gt<CR>
@@ -215,7 +216,7 @@ let g:airline_theme = 'luna'
 " let g:airline#extensions#tabline#enabled = 1
 
 " only run jshint at save time
-let JSHintUpdateWriteOnly=1
+" let JSHintUpdateWriteOnly=1
 
 " ruby debugger
 " let g:ruby_debugger_progname = 'mvim'
@@ -284,7 +285,6 @@ inoremap jk <esc>
 
 " for Ruby
 au FileType ruby vnoremap <buffer> <c-f> :call Autoformat()<cr>
-
 
 " Called once right before you start selecting multiple cursors
 function! Multiple_cursors_before()
