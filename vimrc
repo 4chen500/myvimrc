@@ -10,31 +10,25 @@ Plugin 'scrooloose/nerdtree'
 Plugin 'Shougo/neocomplcache.vim'
 Plugin 'tomtom/tcomment_vim'
 Plugin 'bling/vim-airline'
-Plugin 'fholgado/minibufexpl.vim'
 Plugin 'groenewege/vim-less'
 Plugin 'Yggdroot/indentLine'
 Plugin 'scrooloose/syntastic'
 Plugin 'pangloss/vim-javascript'
 Plugin 'mxw/vim-jsx'
-Plugin 'ryanoasis/vim-devicons'
-Plugin 'ryanoasis/nerd-fonts'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'mileszs/ack.vim'
 Plugin 'lilydjwg/colorizer'
-
-" tmux
-" Plugin 'christoomey/vim-tmux-navigator'
+Plugin 'tpope/vim-fugitive'
+Plugin 'Xuyuanp/nerdtree-git-plugin'
 
 " Color Themes
 Plugin 'flazz/vim-colorschemes'
-" Plugin 'jelera/vim-javascript-syntax'
 
 " Startify
 Plugin 'mhinz/vim-startify'
 
 
 colorscheme jellybeans
-set transparency=10
 
 """"""""
 call vundle#end()
@@ -86,8 +80,8 @@ set autoread
 set nofoldenable
 set encoding=utf8
 
-
-set listchars=tab:▒░,trail:▓,eol:¬
+set showbreak=↪\
+set listchars=tab:→\ ,eol:¬,nbsp:␣,trail:•,extends:⟩,precedes:⟨
 set list
 set incsearch
 
@@ -167,19 +161,19 @@ let NERDTreeChDirMode=0
 let NERDTreeShowHidden=1
 
 " Move to the next buffer
-nmap <C-S-Right> :bnext<CR>
+nmap <Tab> :bnext<CR>
 
-" Move to the previous buffer
-nmap <C-S-Left> :bprevious<CR>
+" " Move to the previous buffer
+nmap <S-Tab> <c-w>w
 
 " Show all open buffers and their status
 nmap <leader>bls :ls<CR>
 
 " Pane resize by 10px each arrow
-nmap <D-S-Left> :vertical resize -2<CR>
-nmap <D-S-Right> :vertical resize +2<CR>
-nmap <D-S-Down> :resize -2<CR>
-nmap <D-S-Up> :resize +2<CR>
+nmap <S-C-Left> :vertical resize -2<CR>
+nmap <S-C-Right> :vertical resize +2<CR>
+nmap <S-C-Down> :resize -2<CR>
+nmap <S-C-Up> :resize +2<CR>
 
 " " Move to the next tab
 " nmap <C-S-t-Right> :gt<CR>
@@ -201,28 +195,19 @@ let g:startify_session_dir = "~/.vim/sessions"
 " automati omnincomplete
 let g:neocomplcache_enable_at_startup = 1
 
-" airline settings
-let g:airline_powerline_fonts = 1
-set guifont=Sauce\ Code\ Pro\:h11
-
-if !exists('g:airline_symbols')
-  let g:airline_symbols = {}
-endif
-
-let g:airline_symbols.space = "\ua0"
-let g:airline_theme = 'luna'
 
 "airline tabs
-" let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#enabled = 1
 
 " only run jshint at save time
 " let JSHintUpdateWriteOnly=1
-
+let g:airline#extensions#tabline#buffer_nr_show = 1
 " ruby debugger
 " let g:ruby_debugger_progname = 'mvim'
 " let g:ruby_debugger_debug_mode = 1
-
-" nmap <leader>t :TagbarToggle<CR>
+let g:tagbar_ctags_bin='/usr/local/bin/ctags'  " Proper Ctags locations
+let g:tagbar_width=26
+nmap <leader>t :TagbarToggle<CR>
 
 " this machine config
 if filereadable(expand("~/.vimrc.local"))
@@ -297,11 +282,20 @@ endfunction
 function! Multiple_cursors_after()
   if exists(':NeoCompleteUnlock')==2
 	exe 'NeoCompleteUnlock'
-  endif
+endif
 endfunction
+
+let g:multi_cursor_exit_from_insert_mode = 0
 
 " Save on esc esc
 map <Esc><Esc> :w<CR>
 
 " disable the startup screen
 set shortmess+=I
+
+let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+autocmd InsertEnter * set cul
+autocmd InsertLeave * set nocul
+
+source ~/.vim-quotes
