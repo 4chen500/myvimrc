@@ -20,6 +20,7 @@ Plugin 'mileszs/ack.vim'
 Plugin 'lilydjwg/colorizer'
 Plugin 'tpope/vim-fugitive'
 Plugin 'Xuyuanp/nerdtree-git-plugin'
+Plugin 'maksimr/vim-jsbeautify'
 
 " Color Themes
 Plugin 'flazz/vim-colorschemes'
@@ -79,9 +80,8 @@ set autoread
 "set foldlevelstart=99 " don't fold everything by default
 set nofoldenable
 set encoding=utf8
-
 set showbreak=↪\
-set listchars=tab:→\ ,eol:¬,nbsp:␣,trail:•,extends:⟩,precedes:⟨
+set listchars=tab:→\ ,eol:¬,nbsp:␣,trail:▓,extends:⟩,precedes:⟨
 set list
 set incsearch
 
@@ -95,7 +95,8 @@ set nowritebackup
 set noswapfile
 set fileformats=unix,dos,mac
 
-
+" system clipboard
+set clipboard=unnamed
 " syntastic settings
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
@@ -198,6 +199,7 @@ let g:neocomplcache_enable_at_startup = 1
 
 "airline tabs
 let g:airline#extensions#tabline#enabled = 1
+let g:airline_theme='distinguished'
 
 " only run jshint at save time
 " let JSHintUpdateWriteOnly=1
