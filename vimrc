@@ -7,7 +7,6 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'terryma/vim-multiple-cursors'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'scrooloose/nerdtree'
-Plugin 'Shougo/neocomplcache.vim'
 Plugin 'tomtom/tcomment_vim'
 Plugin 'bling/vim-airline'
 Plugin 'groenewege/vim-less'
@@ -21,7 +20,7 @@ Plugin 'lilydjwg/colorizer'
 Plugin 'tpope/vim-fugitive'
 Plugin 'Xuyuanp/nerdtree-git-plugin'
 Plugin 'maksimr/vim-jsbeautify'
-
+Plugin 'Valloric/YouCompleteMe'
 " Color Themes
 Plugin 'flazz/vim-colorschemes'
 
@@ -189,6 +188,11 @@ nmap <S-C-Up> :resize +2<CR>
 " nmap <leader>TD :TernDef<CR>
 " nmap <leader>Tr :TernRename<CR>
 " nmap <leader>TT :TernType<CR>
+" YouComleteMe stuff
+
+let g:ycm_enable_diagnostic_signs = 1
+let g:ycm_enable_diagnostic_highlighting = 1
+let g:ycm_collect_identifiers_from_tags_files = 1
 
 " startify stuff. Its kinda annoying.
 let g:startify_session_dir = "~/.vim/sessions"
