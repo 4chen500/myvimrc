@@ -16,17 +16,19 @@ Plugin 'pangloss/vim-javascript'
 Plugin 'mxw/vim-jsx'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'mileszs/ack.vim'
-Plugin 'lilydjwg/colorizer'
+Plugin 'chrisbra/Colorizer'
 Plugin 'tpope/vim-fugitive'
 Plugin 'Xuyuanp/nerdtree-git-plugin'
-Plugin 'maksimr/vim-jsbeautify'
 Plugin 'Valloric/YouCompleteMe'
+
 " Color Themes
 Plugin 'flazz/vim-colorschemes'
 
 " Startify
 Plugin 'mhinz/vim-startify'
 
+" colorizer things
+let g:colorizer_auto_color = 1
 
 colorscheme jellybeans
 
@@ -276,20 +278,6 @@ inoremap jk <esc>
 
 " for Ruby
 au FileType ruby vnoremap <buffer> <c-f> :call Autoformat()<cr>
-
-" Called once right before you start selecting multiple cursors
-function! Multiple_cursors_before()
-  if exists(':NeoCompleteLock')==2
-	exe 'NeoCompleteLock'
-  endif
-endfunction
-
-" Called once only when the multiple selection is canceled (default <Esc>)
-function! Multiple_cursors_after()
-  if exists(':NeoCompleteUnlock')==2
-	exe 'NeoCompleteUnlock'
-endif
-endfunction
 
 let g:multi_cursor_exit_from_insert_mode = 0
 
