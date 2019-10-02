@@ -4,22 +4,15 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
 Plugin 'VundleVim/Vundle.vim'
+Plugin 'zefei/vim-wintabs'
+Plugin 'dense-analysis/ale'
 Plugin 'terryma/vim-multiple-cursors'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'scrooloose/nerdtree'
 Plugin 'tomtom/tcomment_vim'
-Plugin 'bling/vim-airline'
-Plugin 'groenewege/vim-less'
 Plugin 'Yggdroot/indentLine'
-Plugin 'scrooloose/syntastic'
 Plugin 'pangloss/vim-javascript'
-Plugin 'mxw/vim-jsx'
-Plugin 'vim-airline/vim-airline-themes'
-Plugin 'mileszs/ack.vim'
 Plugin 'chrisbra/Colorizer'
-Plugin 'tpope/vim-fugitive'
-Plugin 'Xuyuanp/nerdtree-git-plugin'
-Plugin 'Valloric/YouCompleteMe'
 
 " Color Themes
 Plugin 'flazz/vim-colorschemes'
@@ -50,9 +43,6 @@ if executable('ag')
 endif
 
 filetype plugin on
-set omnifunc=syntaxcomplete#Complete
-"" Highlight unused imports, first saves, clears previous matches
-nnoremap <leader>ji :w<CR>:call clearmatches()<CR>:let cmd = system('unused -v true ' . expand('%'))<CR>:exec cmd<CR>
 
 " Use :help 'option' to see the documentation for the given option.
 set autoindent
@@ -98,22 +88,6 @@ set fileformats=unix,dos,mac
 
 " system clipboard
 set clipboard=unnamed
-" syntastic settings
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-"
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:indentLine_conceallevel = 0
-let g:syntastic_javascript_checkers = ['eslint']
-let g:syntastic_aggregate_errors = 1
-let g:syntastic_enable_signs = 1
-let g:syntastic_loc_list_height = 4
-
-" Allow JSX in js files
-let g:jsx_ext_required = 0
-
 
 set completeopt=menuone,longest,preview
 
@@ -151,11 +125,6 @@ vnoremap <S-Tab> <
 vmap <C-m> gc
 " Disable tComment to escape some entities
 let g:tcomment#replacements_xml={}
-" Text wrap simpler, then type the open tag or ',"
-vmap <C-w> S
-
-" lazy ':'
-map \ :
 
 let mapleader = ','
 noremap  <Leader>; :NERDTreeToggle<CR>
@@ -163,7 +132,8 @@ let NERDTreeChDirMode=0
 let NERDTreeShowHidden=1
 
 " Move to the next buffer
-nmap <Tab> :bnext<CR>
+nmap <Tab> :WintabsNext<CR>
+nmap <S-Tab> :WintabsPrevious<CR>
 
 " " Move to the previous buffer
 nmap <S-Tab> <c-w>w
@@ -177,45 +147,9 @@ nmap <S-C-Right> :vertical resize +2<CR>
 nmap <S-C-Down> :resize -2<CR>
 nmap <S-C-Up> :resize +2<CR>
 
-" " Move to the next tab
-" nmap <C-S-t-Right> :gt<CR>
-" " Move to the last tab
-" nmap <C-S-t-Left> :gT<CR>
-
-" " Add JsDoc for the current function
-" nmap <leader>j :JsDoc<CR>
-
-" Tern stuff
-" nmap <leader>TR :TernRefs<CR>
-" nmap <leader>TD :TernDef<CR>
-" nmap <leader>Tr :TernRename<CR>
-" nmap <leader>TT :TernType<CR>
-" YouComleteMe stuff
-
-let g:ycm_enable_diagnostic_signs = 1
-let g:ycm_enable_diagnostic_highlighting = 1
-let g:ycm_collect_identifiers_from_tags_files = 1
-
 " startify stuff. Its kinda annoying.
 let g:startify_session_dir = "~/.vim/sessions"
-
-" automati omnincomplete
-let g:neocomplcache_enable_at_startup = 1
-
-
-"airline tabs
-let g:airline#extensions#tabline#enabled = 1
-let g:airline_theme='distinguished'
-
-" only run jshint at save time
-" let JSHintUpdateWriteOnly=1
-let g:airline#extensions#tabline#buffer_nr_show = 1
-" ruby debugger
-" let g:ruby_debugger_progname = 'mvim'
-" let g:ruby_debugger_debug_mode = 1
-let g:tagbar_ctags_bin='/usr/local/bin/ctags'  " Proper Ctags locations
-let g:tagbar_width=26
-nmap <leader>t :TagbarToggle<CR>
+let g:startify_custom_header = []
 
 " this machine config
 if filereadable(expand("~/.vimrc.local"))
@@ -292,4 +226,3 @@ let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 autocmd InsertEnter * set cul
 autocmd InsertLeave * set nocul
 
-source ~/.vim-quotes
