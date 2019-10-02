@@ -235,3 +235,12 @@ let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 autocmd InsertEnter * set cul
 autocmd InsertLeave * set nocul
 
+
+" other ale stuff
+highlight ALEErrorSign ctermfg=9
+let g:ale_sign_error = '✖'
+let g:ale_sign_warning = '⚠'
+let g:ale_fixers = {
+\   '*': ['remove_trailing_lines', 'trim_whitespace'],
+\   'javascript': ['eslint'],
+\}
