@@ -5,7 +5,16 @@ call vundle#begin()
 
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'zefei/vim-wintabs'
+" Ale
+let g:ale_completion_enabled = 1
 Plugin 'dense-analysis/ale'
+set omnifunc=ale#completion#OmniFunc
+
+Plugin 'vim-airline/vim-airline'
+
+" Set this. Airline will handle the rest.
+let g:airline#extensions#ale#enabled = 1
+
 Plugin 'terryma/vim-multiple-cursors'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'scrooloose/nerdtree'
