@@ -9,6 +9,10 @@ Plugin 'zefei/vim-wintabs'
 let g:ale_completion_enabled = 1
 Plugin 'dense-analysis/ale'
 set omnifunc=ale#completion#OmniFunc
+set completeopt=menu,longest,preview,noselect,noinsert
+set wildmenu
+
+Plugin 'BrandonRoehl/auto-omni'
 
 Plugin 'vim-airline/vim-airline'
 
