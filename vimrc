@@ -13,9 +13,7 @@ set completeopt=menu,longest,preview,noselect,noinsert
 set wildmenu
 
 Plugin 'BrandonRoehl/auto-omni'
-
 Plugin 'vim-airline/vim-airline'
-
 " Set this. Airline will handle the rest.
 let g:airline#extensions#ale#enabled = 1
 
@@ -26,15 +24,23 @@ Plugin 'tomtom/tcomment_vim'
 Plugin 'Yggdroot/indentLine'
 Plugin 'pangloss/vim-javascript'
 Plugin 'chrisbra/Colorizer'
-
+" Typscript stuff
+Plugin 'leafgarland/typescript-vim'
 " Color Themes
 Plugin 'flazz/vim-colorschemes'
 
 " Startify
 Plugin 'mhinz/vim-startify'
 
+" Prettier
+Plugin 'prettier/vim-prettier'
+
+" vim-prettier
+let g:prettier#autoformat = 0
+autocmd BufWritePre *.js,*.jsx,*.css,*.less,*.scss,*.json,*.graphql PrettierAsync
+
 " colorizer things
-let g:colorizer_auto_color = 1
+let g:colorizer_auto_color = 0
 
 colorscheme jellybeans
 
@@ -102,7 +108,7 @@ set fileformats=unix,dos,mac
 " system clipboard
 set clipboard=unnamed
 
-set completeopt=menuone,longest,preview
+set completeopt=menuone,longest
 
 " This allows buffers to be hidden if you've modified a buffer.
 " This is almost a must if you wish to use buffers in this way.
@@ -110,10 +116,6 @@ set hidden
 
 " CtrlP
 set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/node_modules/*,*/dist/*
-
-" do not history when leaving buffer
-set hidden
-
 
 " Use <C-L> to clear the highlighting of :set hlsearch.
 if maparg('<C-L>', 'n') ==# ''
@@ -201,6 +203,7 @@ endfun
 
 " Project-specific settings:
 au BufEnter *Projects/* call s:real_tab()
+au BufEnter *Projects/shortline* call s:two_tab()
 
 " by default use real tabs
 set noexpandtab
@@ -209,6 +212,17 @@ set shiftwidth=4
 
 " don't use escape to get out of insert mode
 inoremap jk <esc>
+
+let &t_SI .= "\<Esc>[?2004h"
+let &t_EI .= "\<Esc>[?2004l"
+
+inoremap <special> <expr> <Esc>[200~ XTermPasteBegin()
+
+function! XTermPasteBegin()
+   set pastetoggle=<Esc>[201~
+   set paste
+return ""
+endfunction
 
 " Not using JSBEAUTIFY ATM until there is better es6 support.
 " au FileType javascript noremap <buffer>  <c-f> :call JsBeautify()<cr>
@@ -239,7 +253,6 @@ let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 autocmd InsertEnter * set cul
 autocmd InsertLeave * set nocul
 
-
 " other ale stuff
 highlight ALEErrorSign ctermfg=9
 let g:ale_sign_error = '✖'
@@ -248,3 +261,5 @@ let g:ale_fixers = {
 \   '*': ['remove_trailing_lines', 'trim_whitespace'],
 \   'javascript': ['eslint'],
 \}
+
+source ~/.vim-quotes
