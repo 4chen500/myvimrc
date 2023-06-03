@@ -204,6 +204,7 @@ endfun
 " Project-specific settings:
 au BufEnter *Projects/* call s:real_tab()
 au BufEnter *Projects/shortline* call s:two_tab()
+au BufEnter *Projects/LearningTimeVR-Web* call s:two_tab()
 
 " by default use real tabs
 set noexpandtab
