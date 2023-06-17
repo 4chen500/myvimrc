@@ -7,8 +7,9 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'zefei/vim-wintabs'
 " Ale
 let g:ale_completion_enabled = 1
+let g:ale_completion_autoimport = 0
 Plugin 'dense-analysis/ale'
-set omnifunc=ale#completion#OmniFunc
+
 set completeopt=menu,longest,preview,noselect,noinsert
 set wildmenu
 
@@ -16,7 +17,6 @@ Plugin 'BrandonRoehl/auto-omni'
 Plugin 'vim-airline/vim-airline'
 " Set this. Airline will handle the rest.
 let g:airline#extensions#ale#enabled = 1
-
 Plugin 'terryma/vim-multiple-cursors'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'scrooloose/nerdtree'
@@ -258,9 +258,16 @@ autocmd InsertLeave * set nocul
 highlight ALEErrorSign ctermfg=9
 let g:ale_sign_error = '✖'
 let g:ale_sign_warning = '⚠'
+let js_fixers = ['prettier', 'eslint']
 let g:ale_fixers = {
 \   '*': ['remove_trailing_lines', 'trim_whitespace'],
-\   'javascript': ['eslint'],
+\   'javascript': js_fixers,
+\   'javascript.jsx': js_fixers,
+\   'typescript': js_fixers,
+\   'typescriptreact': js_fixers,
+\   'css': ['prettier'],
+\   'json': ['prettier'],
 \}
 
+let g:ale_virtualenv_dir_names = []
 source ~/.vim-quotes
