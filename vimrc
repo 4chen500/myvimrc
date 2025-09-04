@@ -1,25 +1,28 @@
-set nocompatible
-filetype off
+
+set nocompatible              " be iMproved, required
+filetype off                  " required
+
+" set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
+" alternatively, pass a path where Vundle should install plugins
+"call vundle#begin('~/some/path/here')
 
+" let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
+
 Plugin 'zefei/vim-wintabs'
-" Ale
-let g:ale_completion_enabled = 1
+" The following are examples of different formats supported.
+" Keep Plugin commands between vundle#begin/end.
+" plugin on GitHub repo
+Plugin 'tpope/vim-fugitive'
+
 Plugin 'dense-analysis/ale'
-set omnifunc=ale#completion#OmniFunc
-set completeopt=menu,longest,preview,noselect,noinsert
-set wildmenu
 
-Plugin 'BrandonRoehl/auto-omni'
-Plugin 'vim-airline/vim-airline'
-" Set this. Airline will handle the rest.
-let g:airline#extensions#ale#enabled = 1
-
-Plugin 'terryma/vim-multiple-cursors'
-Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'scrooloose/nerdtree'
+Plugin 'vim-airline/vim-airline'
+let g:airline#extensions#ale#enabled = 1
+Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'tomtom/tcomment_vim'
 Plugin 'Yggdroot/indentLine'
 Plugin 'pangloss/vim-javascript'
@@ -35,6 +38,7 @@ Plugin 'mhinz/vim-startify'
 " Prettier
 Plugin 'prettier/vim-prettier'
 
+Plugin 'mxw/vim-jsx'
 " vim-prettier
 let g:prettier#autoformat = 0
 autocmd BufWritePre *.js,*.jsx,*.css,*.less,*.scss,*.json,*.graphql PrettierAsync
@@ -44,51 +48,83 @@ let g:colorizer_auto_color = 0
 
 colorscheme jellybeans
 
-""""""""
-call vundle#end()
+" plugin from http://vim-scripts.org/vim/scripts.html
+" Plugin 'L9'
+" Git plugin not hosted on GitHub
+" git repos on your local machine (i.e. when working on your own plugin)
+" The sparkup vim script is in a subdirectory of this repo called vim.
+" Pass the path to set the runtimepath properly.
+" Install L9 and avoid a Naming conflict if you've already installed a
+" different version somewhere else.
+" Plugin 'ascenator/L9', {'name': 'newL9'}
 
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+filetype plugin indent on    " required
+" To ignore plugin indent changes, instead use:
+"filetype plugin on
+"
+" Brief help
+" :PluginList       - lists configured plugins
+" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
+" :PluginSearch foo - searches for foo; append `!` to refresh local cache
+" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
+"
+" see :h vundle for more details or wiki for FAQ
+" Put your non-Plugin stuff after this line
 
+" j k to exit insert mode
+inoremap jk <esc>
+let &t_SI = "\e[5 q" " Blinking I-beam in insert mode
+let &t_EI = "\e[2 q" " Steady block in normal mode
+let &t_SR = "\e[3 q" " Blinking underline in replace mode
+
+" Enable syntax highlighting
+syntax on
+
+" Enable file type detection
 filetype plugin indent on
 
-autocmd FileType ruby compiler ruby
+" ALE configuration
+let g:ale_set_highlights = 1
+let g:ale_set_loclist = 1
+let g:ale_set_quickfix = 1
+let g:ale_set_signs = 1
 
-if has('syntax') && !exists('g:syntax_on')
-  syntax enable
-endif
+" Customize linting for specific file types
+" Java
+let g:ale_java_checkstyle_executable = 'checkstyle'
+let g:ale_java_checkstyle_options = '--config /path/to/checkstyle.xml'
 
-" ack-ag-vim stuff
-if executable('ag')
-  let g:ackprg = 'ag --vimgrep'
-endif
+" JavaScript
+let g:ale_javascript_eslint_executable = 'eslint'
+let g:ale_javascript_eslint_options = '--fix'
 
-filetype plugin on
+" Ruby
+let g:ale_ruby_rubocop_executable = 'rubocop'
 
-" Use :help 'option' to see the documentation for the given option.
-set autoindent
-set smartindent
-set backspace=indent,eol,start
-set complete-=i
-set showmatch
-set matchtime=1
-set showmode
-set smarttab
+" Python
+let g:ale_python_flake8_executable = 'flake8'
 
-" Don't automatically resizel panes
-set noequalalways
+" HTML
+let g:ale_html_tidy_executable = 'tidy'
 
-set nrformats-=octal
-set shiftround
+" CSS
+let g:ale_css_stylelint_executable = 'stylelint'
 
-set ttimeout
-set ttimeoutlen=50
+" SQL
+let g:ale_sql_sqlfmt_executable = 'sqlfmt'
 
-set laststatus=2
-set ruler
-set showcmd
-set wildmenu
-set autoread
-"set foldlevelstart=99 " don't fold everything by default
-set nofoldenable
+" Generic linter for other languages
+let g:ale_fixers = {
+\   '*': ['prettier'],
+\   'json': ['jsonlint'],
+\}
+
+set number
+
+let mapleader = ","
+nnoremap <leader>n :NERDTreeToggle<CR>
 set encoding=utf8
 set showbreak=↪\
 set listchars=tab:→\ ,eol:¬,nbsp:␣,trail:▓,extends:⟩,precedes:⟨
@@ -109,36 +145,10 @@ set fileformats=unix,dos,mac
 set clipboard=unnamed
 
 set completeopt=menuone,longest
+set tabstop=4
+set shiftwidth=4
+set expandtab
 
-" This allows buffers to be hidden if you've modified a buffer.
-" This is almost a must if you wish to use buffers in this way.
-set hidden
-
-" CtrlP
-set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/node_modules/*,*/dist/*
-
-" Use <C-L> to clear the highlighting of :set hlsearch.
-if maparg('<C-L>', 'n') ==# ''
-  nnoremap <silent> <C-L> :nohlsearch<CR><C-L>
-endif
-
-inoremap <C-U> <C-G>u<C-U>
-
-" In many terminal emulators the mouse works just fine, thus enable it.
-if has('mouse')
-  set mouse=a
-endif
-
-noremap  <C-S> :update<CR>
-vnoremap <C-S> <C-C>:update<CR>
-inoremap <C-S> <Esc>:update<CR>
-
-" indend / deindent after selecting the text with (⇧ v), (.) to repeat.
-vnoremap <Tab> >
-vnoremap <S-Tab> <
-" comment / decomment & normal comment behavior
-vmap <C-m> gc
-" Disable tComment to escape some entities
 let g:tcomment#replacements_xml={}
 
 let mapleader = ','
@@ -200,67 +210,4 @@ function! s:real_tab()
   " Two space tabbing:
   set noexpandtab
 endfun
-
-" Project-specific settings:
-au BufEnter *Projects/* call s:real_tab()
-au BufEnter *Projects/shortline* call s:two_tab()
-au BufEnter *Projects/LearningTimeVR-Web* call s:two_tab()
-
-" by default use real tabs
-set noexpandtab
-set tabstop=4
-set shiftwidth=4
-
-" don't use escape to get out of insert mode
-inoremap jk <esc>
-
-let &t_SI .= "\<Esc>[?2004h"
-let &t_EI .= "\<Esc>[?2004l"
-
-inoremap <special> <expr> <Esc>[200~ XTermPasteBegin()
-
-function! XTermPasteBegin()
-   set pastetoggle=<Esc>[201~
-   set paste
-return ""
-endfunction
-
-" Not using JSBEAUTIFY ATM until there is better es6 support.
-" au FileType javascript noremap <buffer>  <c-f> :call JsBeautify()<cr>
-" " au FileType javascript call JavaScriptFold()
-"   " for html
-" au FileType html noremap <buffer> <c-f> :call HtmlBeautify()<cr>
-"   " for css or scss
-" au FileType css noremap <buffer> <c-f> :call CSSBeautify()<cr>
-"
-"   " for selected text
-" au FileType javascript vnoremap <buffer>  <c-f> :call RangeJsBeautify()<cr>
-" au FileType html vnoremap <buffer> <c-f> :call RangeHtmlBeautify()<cr>
-" au FileType css vnoremap <buffer> <c-f> :call RangeCSSBeautify()<cr>
-
-" for Ruby
-au FileType ruby vnoremap <buffer> <c-f> :call Autoformat()<cr>
-
-let g:multi_cursor_exit_from_insert_mode = 0
-
-" Save on esc esc
-map <Esc><Esc> :w<CR>
-
-" disable the startup screen
-set shortmess+=I
-
-let &t_SI = "\<Esc>]50;CursorShape=1\x7"
-let &t_EI = "\<Esc>]50;CursorShape=0\x7"
-autocmd InsertEnter * set cul
-autocmd InsertLeave * set nocul
-
-" other ale stuff
-highlight ALEErrorSign ctermfg=9
-let g:ale_sign_error = '✖'
-let g:ale_sign_warning = '⚠'
-let g:ale_fixers = {
-\   '*': ['remove_trailing_lines', 'trim_whitespace'],
-\   'javascript': ['eslint'],
-\}
-
-source ~/.vim-quotes
+ource ~/.vim-quotes
