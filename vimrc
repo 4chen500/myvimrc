@@ -1,4 +1,3 @@
-
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
@@ -39,6 +38,10 @@ Plugin 'mhinz/vim-startify'
 Plugin 'prettier/vim-prettier'
 
 Plugin 'mxw/vim-jsx'
+
+" gemini
+Plugin 'mattn/vim-gemini'
+
 " vim-prettier
 let g:prettier#autoformat = 0
 autocmd BufWritePre *.js,*.jsx,*.css,*.less,*.scss,*.json,*.graphql PrettierAsync
@@ -124,7 +127,7 @@ let g:ale_fixers = {
 set number
 
 let mapleader = ","
-nnoremap <leader>n :NERDTreeToggle<CR>
+nnoremap <leader>; :NERDTreeToggle<CR>
 set encoding=utf8
 set showbreak=↪\
 set listchars=tab:→\ ,eol:¬,nbsp:␣,trail:▓,extends:⟩,precedes:⟨
@@ -210,4 +213,3 @@ function! s:real_tab()
   " Two space tabbing:
   set noexpandtab
 endfun
-ource ~/.vim-quotes
